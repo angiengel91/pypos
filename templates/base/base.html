@@ -23,6 +23,7 @@
 
 <body id="page-top">
 
+  {% block side_bar %}
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -139,6 +140,7 @@
 
     </ul>
     <!-- End of Sidebar -->
+{% endblock side_bar %}
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
@@ -146,6 +148,7 @@
       <!-- Main Content -->
       <div id="content">
 
+        {% block top_bar %}
         <!-- Topbar -->
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
@@ -328,7 +331,9 @@
 
         </nav>
         <!-- End of Topbar -->
+{% endblock top_bar %}
 
+{% block content %}
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
@@ -340,7 +345,9 @@
 
       </div>
       <!-- End of Main Content -->
+{% endblock content %}
 
+{%block footer %}
       <!-- Footer -->
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
@@ -350,13 +357,13 @@
         </div>
       </footer>
       <!-- End of Footer -->
-
     </div>
     <!-- End of Content Wrapper -->
 
   </div>
+  {% endblock footer %}
   <!-- End of Page Wrapper -->
-
+{% block login %} {% endblock login %}
   <!-- Scroll to Top Button-->
   <a class="scroll-to-top rounded" href="#page-top">
     <i class="fas fa-angle-up"></i>
@@ -390,6 +397,8 @@
 
   <!-- Custom scripts for all pages-->
   <script src="{% static 'base/js/sb-admin-2.min.js' %}"></script>
+
+  {% block js_page %} {% endblock js_page %}
 
 </body>
 
