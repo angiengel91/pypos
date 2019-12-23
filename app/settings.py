@@ -55,7 +55,8 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        #En esta línea se debe especificar el directorio donde está la plantilla base (el padre) del proyecto
+        'DIRS': [os.path.join(BASE_DIR, 'templates'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -123,3 +124,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#En esta línea se agrega el directorio donde están los archivos estáticos
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
