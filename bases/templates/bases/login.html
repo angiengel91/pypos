@@ -20,7 +20,25 @@
             <div class="col-lg-6">
               <div class="p-5">
                 <div class="text-center">
-                  <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                  <h1 class="h4 text-gray-900 mb-4">Bienvenido!!</h1>
+                  <!-- MANEJO DE ERRORES DE LOGIN -->
+                  <small class="text-danger">
+                    {% if form.errors %}
+                      {% for field in form %}
+                        {% if field.errors %}
+                          {% for error in field.errors %}
+                            {{ error|escape }}
+                          {% endfor %}
+                        {% endif %}
+                      {% endfor %}
+
+                      {% if form.non_field_errors %}
+                        {% for error in form.non_field_errors %}
+                          {{ error|escape }}
+                        {% endfor %}
+                      {% endif %}
+                    {% endif %}
+                  </small>
                 </div>
                 <form class="user" method="POST">
                   {% csrf_token %} <!-- Esta etiqueta se debe imprimir siempre que se use el métodp POST -->
