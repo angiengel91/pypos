@@ -1,5 +1,9 @@
 from django import forms
-from .models import Categoria, Subcategoria
+from .models import Categoria, Subcategoria, Marca
+
+# --------------------------------------------------------------- #
+# --------------------- CATEGORIAS ------------------------------ #
+# --------------------------------------------------------------- #
 
 class CategoriaForm(forms.ModelForm):
     class Meta:
@@ -16,6 +20,10 @@ class CategoriaForm(forms.ModelForm):
             self.fields[field].widget.attrs.update({
                 'class':'form-control'
             })
+
+# ------------------------------------------------------------------ #
+# --------------------- SUBCATEGORIAS ------------------------------ #
+# ------------------------------------------------------------------ #
 
 class SubcategoriaForm(forms.ModelForm):
     #Mostrar solo las categorías activas en los dropdown
@@ -35,3 +43,23 @@ class SubcategoriaForm(forms.ModelForm):
                 'class':'form-control'
             })        
         self.fields['objCategoria'].empty_label = 'Seleccione Categoría'
+
+# ----------------------------------------------------------- #
+# --------------------- MARCAS ------------------------------ #
+# ----------------------------------------------------------- #
+
+class MarcaForm(forms.ModelForm):
+    class Meta:
+        model = Marca
+        fields = ['Descripcion', 'estado']
+        labels = {'Descripcion':'Descripción de la Marca', 'estado':'Estado'}
+        widget = {'Descripcion': forms.TextInput}
+
+    #Este método está sobreescribiento el load del frm padre para que todos los elementos 
+    # tomen la clase form-control de bootstrap y carguen con el css
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            self.fields[field].widget.attrs.update({
+                'class':'form-control'
+            })
