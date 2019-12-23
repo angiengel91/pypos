@@ -33,7 +33,7 @@
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'bases:home' %}">
         <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+          <i class="fas fa-file-invoice-dollar"></i>
         </div>
         <div class="sidebar-brand-text mx-3">KhayPOS Py</div>
       </a>
@@ -66,7 +66,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Catálogos de Inventario</h6>
             <a class="collapse-item" href="{% url 'inv:categoria_list' %}">Categorías</a>
-            <a class="collapse-item" href="cards.html">Cards</a>
+            <a class="collapse-item" href="{% url 'inv:subcategoria_list' %}">Subcategorías</a>
           </div>
         </div>
       </li>
