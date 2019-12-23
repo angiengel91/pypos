@@ -19,7 +19,7 @@ class Categoria(ClaseModelo):
     #Sobreescribir el método SAVE de la clase padre, para que las descripciones se guarden en mayúsculas
     def save(self):
         self.Descripcion = self.Descripcion.upper()
-        super(Categoria, self).save
+        super(Categoria, self).save()
 
     #Nombre de la clase en plural
     class Meta:
