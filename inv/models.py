@@ -66,3 +66,24 @@ class Marca(ClaseModelo):
     #Nombre de la clase en plural
     class Meta:
         verbose_name_plural = 'Marcas'
+
+#Clase Unidades de Medida
+class UM(ClaseModelo):
+    Descripcion =  models.CharField(
+        max_length = 100,
+        help_text = 'Descripción de la UM', #Funciona como un tooltip o un placeholder, texto que se muestra en las cajas de tipo input
+        unique = True #Valores únicos
+    )
+    
+    #Cuando se haga referencia al modelo, se a a mostrar uno o varios campos de la clase
+    def __str__(self):
+        return '{}'.format(self.Descripcion)
+
+    #Sobreescribir el método SAVE de la clase padre, para que las descripciones se guarden en mayúsculas
+    def save(self):
+        self.Descripcion = self.Descripcion.upper()
+        super(UM, self).save()
+
+    #Nombre de la clase en plural
+    class Meta:
+        verbose_name_plural = 'Unidades de Medida'
