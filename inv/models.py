@@ -75,15 +75,35 @@ class UM(ClaseModelo):
         unique = True #Valores únicos
     )
     
-    #Cuando se haga referencia al modelo, se a a mostrar uno o varios campos de la clase
     def __str__(self):
         return '{}'.format(self.Descripcion)
 
-    #Sobreescribir el método SAVE de la clase padre, para que las descripciones se guarden en mayúsculas
     def save(self):
         self.Descripcion = self.Descripcion.upper()
         super(UM, self).save()
 
-    #Nombre de la clase en plural
     class Meta:
         verbose_name_plural = 'Unidades de Medida'
+
+#Clase Productos
+class Producto(ClaseModelo):
+    Codigo =  models.CharField(max_length = 20, unique = True)
+    Codigo_Barra = models.CharField(max_length = 50)
+    Descripcion = models.CharField(max_length = 200)
+    Precio = models.FloatField(default=0)
+    Existencia = models.IntegerField(default=0)    
+    Ultima_Compra = models.DateField(null=True, blank=True)
+    objMarca = models.ForeignKey(Marca, on_delete=models.CASCADE)
+    objUM = models.ForeignKey(UM, on_delete=models.CASCADE)
+    objSubcategoria = models.ForeignKey(Subcategoria, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return '{}'.format(self.Descripcion)
+
+    def save(self):
+        self.Descripcion = self.Descripcion.upper()
+        super(Producto, self).save()
+
+    class Meta:
+        verbose_name_plural = 'Unidades de Medida'
+        unique_together = ('Codigo', 'Codigo_Barra')
