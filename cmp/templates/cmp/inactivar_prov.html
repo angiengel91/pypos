@@ -1,0 +1,85 @@
+<div class="modal-dialog modal-sm">
+  <div class="modal-content">
+      <form method="POST" class="form-inline">
+          {% csrf_token %}
+          <div class="col">
+              <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                    <div class="col mr-2">
+                      <div class="text-xs font-weight-bold text-warning text-uppercase">
+                          <div class="alert">
+                              ¿ Inactivar <b>{{ obj.descripcion }} </b> ?
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <!-- Al cambiar el tipo del boton, de SUBMIT a BUTTON, se le indica a la página, que el 
+                      comportamiento del botón, será controlado por AJAX y no por le formulario en sí -->
+                      <button type="button" class="btn btn-danger" id="btnInactivar"><i class="far fa-question-circle"></i>Si, Inactivar</button>
+                      <button type="button" class="btn btn-success" onclick="return cerrar_modal()"><span class="fa fa-undo"></span> No, Cancelar</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </form>
+  </div>
+</div>
+
+
+<script>
+  $(document).ready(function(){ // Esperar a que la página haya terminado de renderizar
+    
+    // Esta variable se va a usar para guardar el token django {% csrf_token %} del formulario
+    // Cuando se inicializa el token de djando, automaticamante se crea un input hidden que tiene el id del token.
+    // Para poder encontrar el id, se debe abrir las herramientas de desarrollador del explorador, pestaña Network -> XHR, 
+    // Seleccionar el tab Response y ahí se encuenta el nombre. En este caso, el id del token es: csrfmiddlewaretoken
+    // Una vez que se encuentra el id, la propiedad .val, devuelve el valor que contiene el input.
+    var token = $('input[name=csrfmiddlewaretoken]').val();
+    
+    // Una vez que se tenga el valor del token, se debe "crear" una cabecera antes del envío de la data, la cual 
+    // Analiza la URL y le agrega un token ajax de seguridad, al cual se le pasa el valor que se obtiene de la variable
+    // Que se declaró con anterioridad. Estas configuraciones, se enviarán en el método AJAX.
+    $.ajaxSetup({
+          beforeSend: function(xhr, settings) {
+               if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) { //Sentencia que analiza la URL
+                  xhr.setRequestHeader("X-CSRFToken", token); //Sentencia que inicializa el token desde AJAX
+              }
+          }
+      });
+    
+    $("#btnInactivar").click(function(e){ //btnInactivar es el id del botón
+        e.preventDefault(); //Desactivar el envío del formulario
+        var id = {{ obj.id }}; //inicialización de la variable que contiene el id del proveedor
+        var template="{% url 'cmp:proveedor_inactivar' obj.id %}"; //ruta de la vista
+        //template += id;
+        var data = {"id":id}; //esto es un objeto de json para poder enviar el ID del proveedor
+        data = JSON.stringify(data); //Darle formato de cadena a la variable ID
+        
+        //ejecutar el método AJAX, se debe especificar el tipo, la url que se va a abrir y la data que se va a enviar
+        $.ajax({
+          type: "POST",
+          url: template,
+          data: data,
+          
+          beforeSend: function(xhr,settings){ //En esta función se está enviando el token
+            $.ajaxSettings.beforeSend(xhr,settings); 
+          },
+          
+          //Si todo está bien, se manda un log a la consola y se cierra el modal
+          success: function(response){ 
+            console.log(response);
+            cerrar_modal();
+            alert(response);
+          },
+
+          //i hay algún error, se manda el error a la consola y se cierra el modal
+          error: function(jqXHR, textStatus, errorThrow){
+            console.log(textStatus, errorThrow);
+            cerrar_modal();
+          }
+        });
+    });
+  });
+  </script>
