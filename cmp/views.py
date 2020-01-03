@@ -6,6 +6,7 @@ from .models import Proveedor
 from cmp.forms import ProveedorForm
 from django.http import HttpResponse
 import json
+from django.contrib import messages
 
 # ------------------------------------------------------------ #
 # --------------------- PROVEEDORES -------------------------- #

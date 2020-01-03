@@ -21,7 +21,10 @@
               <div class="p-5">
                 <div class="text-center">
                   <h1 class="h4 text-gray-900 mb-4">Bienvenido!!</h1>
-                  <!-- MANEJO DE ERRORES DE LOGIN -->
+                  
+                  <!--EL MANEJO DE ERRORES SE ESTÁ HACIENDON CON JQUERY-->
+
+                  <!-- MANEJO DE ERRORES DE LOGIN CON ETIQUETAS
                   <small class="text-danger">
                     {% if form.errors %}
                       {% for field in form %}
@@ -38,7 +41,7 @@
                         {% endfor %}
                       {% endif %}
                     {% endif %}
-                  </small>
+                  </small> -->
                 </div>
                 <form class="user" method="POST">
                   {% csrf_token %} <!-- Esta etiqueta se debe imprimir siempre que se use el métodp POST -->
@@ -79,3 +82,23 @@
 
 </div>
 {% endblock %}
+
+{% block js_page %} 
+<script>
+  {% if form.errors %}
+    {% for field in form %}
+      {% if field.errors %}
+        {% for error in field.errors %}
+          mensaje('{{ error|escape }}', 'red'); 
+        {% endfor %}
+      {% endif %}
+    {% endfor %}
+
+    {% if form.non_field_errors %}
+      {% for error in form.non_field_errors %}
+        mensaje('{{ error|escape }}', 'red'); 
+      {% endfor %}
+    {% endif %}
+  {% endif %}
+</script>
+{% endblock js_page %}

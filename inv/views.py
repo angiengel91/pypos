@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.views import generic
 from django.urls import reverse_lazy
 from .models import Categoria, Subcategoria, Marca, UM, Producto
 from .forms import CategoriaForm, SubcategoriaForm, MarcaForm, UMForm, ProductoForm
+from django.contrib import messages
 
 # --------------------------------------------------------------- #
 # --------------------- CATEGORIAS ------------------------------ #
@@ -17,13 +19,14 @@ class CategoriaView(LoginRequiredMixin, generic.ListView):
     login_url = 'bases:login'
 
 #Nueva
-class CategoriaNew(LoginRequiredMixin, generic.CreateView):
+class CategoriaNew(SuccessMessageMixin, LoginRequiredMixin, generic.CreateView):
     model = Categoria
     template_name = 'inv/categoria_form.html'
     context_object_name = 'obj'
     form_class = CategoriaForm
     success_url = reverse_lazy('inv:categoria_list')
     login_url = 'bases:login'
+    success_message = 'Categoría creada con éxito!'
 
     #Se sobreescribe este método para poder tener el usuario que crea
     def form_valid(self, form):
@@ -31,13 +34,14 @@ class CategoriaNew(LoginRequiredMixin, generic.CreateView):
         return super().form_valid(form)
 
 #Editar 
-class CategoriaEdit(LoginRequiredMixin, generic.UpdateView):
+class CategoriaEdit(SuccessMessageMixin, LoginRequiredMixin, generic.UpdateView):
     model = Categoria
     template_name = 'inv/categoria_form.html'
     context_object_name = 'obj'
     form_class = CategoriaForm
     success_url = reverse_lazy('inv:categoria_list')
     login_url = 'bases:login'
+    success_message = 'Categoría actualizada con éxito!'
 
     #Se sobreescribe este método para poder tener el usuario que modifica
     def form_valid(self, form):
@@ -234,6 +238,7 @@ def marca_inactivar(request, id):
     if request.method=='POST':
         marca.estado=False
         marca.save()
+        messages.success(request, 'Marca desactivada con éxito!')
         return redirect("inv:marca_list")
 
     return render(request, template_name, contexto)

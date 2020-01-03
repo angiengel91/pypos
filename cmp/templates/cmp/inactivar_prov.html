@@ -71,12 +71,14 @@
           success: function(response){ 
             console.log(response);
             cerrar_modal();
-            alert(response);
+            var tipo=response.startsWith('El Proveedor no existe' ? 'red':'gren');
+            mensaje(response, tipo);
           },
 
           //i hay algún error, se manda el error a la consola y se cierra el modal
           error: function(jqXHR, textStatus, errorThrow){
             console.log(textStatus, errorThrow);
+            mensaje(errorThrow, 'red');
             cerrar_modal();
           }
         });
